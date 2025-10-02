@@ -6,7 +6,7 @@
     "homeUrl": "https://swapden.vercel.app",
     "imageUrl": "https://swapden.vercel.app/image.png",
     "buttonTitle": "Swap",
-    "splashImageUrl": "https://swapden.vercel.app/splash.png",
+    "splashImageUrl": "https://swapden.vercel.app/logo.png",
     "splashBackgroundColor": "#FFFFFF",
     "webhookUrl": "https://swapden.vercel.app/api/webhook",
     "subtitle": "Swap tokens with ease",

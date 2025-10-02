@@ -12,7 +12,7 @@ import { sdk } from '@farcaster/miniapp-sdk'
 export const metadata: Metadata = {
   title: "SwapDen - Decentralized Token Exchange",
   description: "Swap tokens instantly with low fees and secure transactions",
-  generator: "v0.app",
+  generator: "KingKC",
 }
 
 await sdk.actions.ready()
