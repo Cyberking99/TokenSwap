@@ -7,7 +7,7 @@ import { Web3Provider } from "@/components/providers/web3-provider"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 import { Suspense } from "react"
-import { sdk } from '@farcaster/miniapp-sdk'
+import { FarcasterProvider } from "@/components/providers/farcaster-provider"
 
 export const metadata: Metadata = {
   title: "SwapDen - Decentralized Token Exchange",
@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   generator: "KingKC",
 }
 
-await sdk.actions.ready()
 
 export default function RootLayout({
   children,
@@ -25,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        <FarcasterProvider>
         <Suspense fallback={<div>Loading...</div>}>
           <Web3Provider>
             {children}
@@ -32,6 +32,7 @@ export default function RootLayout({
           </Web3Provider>
         </Suspense>
         <Analytics />
+        </FarcasterProvider>
       </body>
     </html>
   )
