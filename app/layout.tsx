@@ -9,7 +9,7 @@ import "./globals.css"
 import { Suspense } from "react"
 
 export const metadata: Metadata = {
-  title: "TokenSwap - Decentralized Token Exchange",
+  title: "SwapDen - Decentralized Token Exchange",
   description: "Swap tokens instantly with low fees and secure transactions",
   generator: "v0.app",
 }

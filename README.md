@@ -1,8 +1,8 @@
-# TokenSwap - Decentralized Token Exchange
+# SwapDen - Decentralized Token Exchange
 
 A modern, secure decentralized token swap application built with Next.js, WalletConnect, and Solidity smart contracts. Trade ERC-20 tokens instantly with low fees and a beautiful user interface.
 
-![TokenSwap Interface](https://via.placeholder.com/1200x600/1a1a2e/ffffff?text=TokenSwap+DeFi+Platform)
+![SwapDen Interface](https://via.placeholder.com/1200x600/1a1a2e/ffffff?text=SwapDen+DeFi+Platform)
 
 ## Features
 

@@ -1,4 +1,4 @@
-# TokenSwap Smart Contract
+# SwapDen Smart Contract
 
 ## Overview
 

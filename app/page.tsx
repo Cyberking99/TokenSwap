@@ -1,5 +1,6 @@
 import { SwapCard } from "@/components/swap-card"
 import { WalletButton } from "@/components/wallet-button"
+import Link from "next/link"
 
 export default function Home() {
   return (
@@ -8,7 +9,7 @@ export default function Home() {
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-primary" />
-            <h1 className="text-xl font-bold">TokenSwap</h1>
+            <h1 className="text-xl font-bold">SwapDen</h1>
           </div>
           <WalletButton />
         </div>
