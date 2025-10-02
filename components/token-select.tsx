@@ -5,7 +5,7 @@ import { Check, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
-import { type Token, SUPPORTED_TOKENS } from "@/lib/contracts/token-swap"
+import { type Token } from "@/lib/contracts/token-swap"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 
@@ -13,9 +13,10 @@ interface TokenSelectProps {
   value?: Token
   onSelect: (token: Token) => void
   disabled?: boolean
+  tokens: Token[]
 }
 
-export function TokenSelect({ value, onSelect, disabled }: TokenSelectProps) {
+export function TokenSelect({ value, onSelect, disabled, tokens }: TokenSelectProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -51,7 +52,7 @@ export function TokenSelect({ value, onSelect, disabled }: TokenSelectProps) {
           <CommandList>
             <CommandEmpty>No token found.</CommandEmpty>
             <CommandGroup>
-              {SUPPORTED_TOKENS.map((token) => (
+              {tokens.map((token) => (
                 <CommandItem
                   key={token.address}
                   value={token.symbol}
