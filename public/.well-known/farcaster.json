@@ -1,0 +1,39 @@
+{
+  "frame": {
+    "name": "SwapDen",
+    "version": "1",
+    "iconUrl": "https://swapden.vercel.app/icon.png",
+    "homeUrl": "https://swapden.vercel.app",
+    "imageUrl": "https://swapden.vercel.app/image.png",
+    "buttonTitle": "Swap",
+    "splashImageUrl": "https://swapden.vercel.app/splash.png",
+    "splashBackgroundColor": "#FFFFFF",
+    "webhookUrl": "https://swapden.vercel.app/api/webhook",
+    "subtitle": "Swap tokens with ease",
+    "description": "Swap from one token to another easily",
+    "primaryCategory": "finance",
+    "screenshotUrls": [
+      "https://swapden.vercel.app/screenshot1.jpg",
+      "https://swapden.vercel.app/screenshot2.jpg",
+      "https://swapden.vercel.app/screenshot3.jpg",
+      "https://swapden.vercel.app/screenshot4.jpg"
+    ],
+    "heroImageUrl": "https://swapden.vercel.app/og.png",
+    "tagline": "Swap tokens with ease",
+    "tags": [
+      "defi",
+      "token",
+      "swap",
+      "exchange",
+      "usdc"
+    ],
+    "ogTitle": "SwapDen - Swap tokens easily",
+    "ogDescription": "Swap from one token to another easily",
+    "ogImageUrl": "https://swapden.vercel.app/og.png"
+  },
+  "accountAssociation": {
+    "header": "eyJmaWQiOjg3MDQ0OSwidHlwZSI6ImF1dGgiLCJrZXkiOiIweEU4ODczM2JDNjQ5NzVFNjRFQzZiMGZCQjdGNTQ1NzlFNGJCOUFiYTgifQ",
+    "payload": "eyJkb21haW4iOiJzd2FwZGVuLnZlcmNlbC5hcHAifQ",
+    "signature": "oOWnTOp+nznfJd1f78rO/TRn51vlRz2l4Vd0C/bHBi8LZfujBr4C4CK7/5cd5DPguYVkQj6kPNAyAGLQyooFfRs="
+  }
+}

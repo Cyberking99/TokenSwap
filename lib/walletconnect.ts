@@ -22,7 +22,7 @@ export const modal = createAppKit({
   },
   metadata: {
     name: "SwapDen",
-    description: "Swap from one token to another easily/",
+    description: "Swap from one token to another easily",
     icons: ["https://myapp.com/icon.png"],
     url: "https://myapp.com",
   },
