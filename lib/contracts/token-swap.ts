@@ -29,6 +29,26 @@ export const TOKEN_SWAP_ABI = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    inputs: [
+      { internalType: "address", name: "token", type: "address" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+    ],
+    name: "addLiquidity",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "token", type: "address" },
+      { internalType: "uint256", name: "amount", type: "uint256" },
+    ],
+    name: "removeLiquidity",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
 ] as const
 
 export const ERC20_ABI = [
@@ -74,6 +94,7 @@ export interface Token {
   chainId?: number
 }
 
+// Base catalog (mainnet) plus optional per-chain overrides via env
 export const CONTRACTS = {
   TOKEN_SWAP: (process.env.NEXT_PUBLIC_TOKEN_SWAP_ADDRESS || "0x0000000000000000000000000000000000000000") as `0x${string}`,
   TOKENS: {
@@ -84,12 +105,14 @@ export const CONTRACTS = {
   },
 }
 
+// Optional: chain-specific swap address via env NEXT_PUBLIC_TOKEN_SWAP_ADDRESS_<chainId>
 export function getSwapAddress(chainId?: number): `0x${string}` {
   const key = chainId ? `NEXT_PUBLIC_TOKEN_SWAP_ADDRESS_${chainId}` : undefined
   const byChain = key ? (process.env[key] as string | undefined) : undefined
   return (byChain || process.env.NEXT_PUBLIC_TOKEN_SWAP_ADDRESS || CONTRACTS.TOKEN_SWAP) as `0x${string}`
 }
 
+// Map of known token addresses per chain
 const TOKEN_ADDRESSES_BY_CHAIN: Record<number, Record<string, `0x${string}`>> = {
   1: {
     USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
@@ -116,6 +139,7 @@ function isZeroAddress(addr?: string) {
   return !addr || addr === "0x0000000000000000000000000000000000000000"
 }
 
+// Known token catalogs by chain. Start with mainnet; extend as needed or override via env.
 const STATIC_TOKEN_CATALOG_BY_CHAIN: Record<number, Token[]> = {
   1: [
     {
@@ -190,6 +214,7 @@ export function getSupportedTokens(chainId: number): Token[] {
     return { ...t, address: addr, chainId: chainId || t.chainId }
   })
 
+  // Optionally add commonly used stables via env if not in static catalog on the chain
   const maybeAdd = (symbol: string, name: string, decimals: number, logoURI: string) => {
     const envAddress = getEnvTokenAddress(symbol, chainId)
     if (!envAddress || isZeroAddress(envAddress)) return undefined
@@ -213,7 +238,9 @@ export function getSupportedTokens(chainId: number): Token[] {
   const extraDAI = maybeAdd("DAI", "Dai Stablecoin", 18, "/dai-coin.jpg")
   if (extraDAI) extras.push(extraDAI)
 
+  // Filter out any tokens that have zero/empty addresses for the selected chain
   const finalList = [...withEnv, ...extras].filter((t) => !isZeroAddress(t.address))
 
+  // If after filtering we somehow have no tokens, fall back to mainnet catalog (read-only)
   return finalList.length > 0 ? finalList : STATIC_TOKEN_CATALOG_BY_CHAIN[1]
 }
