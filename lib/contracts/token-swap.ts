@@ -94,36 +94,26 @@ export interface Token {
   chainId?: number
 }
 
-// Base catalog (mainnet) plus optional per-chain overrides via env
 export const CONTRACTS = {
   TOKEN_SWAP: (process.env.NEXT_PUBLIC_TOKEN_SWAP_ADDRESS || "0x0000000000000000000000000000000000000000") as `0x${string}`,
   TOKENS: {
-    USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-    DAI: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-    WETH: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+    USDC: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    STIM: "0x035d2026d6ab320150F9B0456D426D5CDdF8423F",
+    WETH: "0x4200000000000000000000000000000000000006",
   },
 }
 
-// Optional: chain-specific swap address via env NEXT_PUBLIC_TOKEN_SWAP_ADDRESS_<chainId>
 export function getSwapAddress(chainId?: number): `0x${string}` {
   const key = chainId ? `NEXT_PUBLIC_TOKEN_SWAP_ADDRESS_${chainId}` : undefined
   const byChain = key ? (process.env[key] as string | undefined) : undefined
   return (byChain || process.env.NEXT_PUBLIC_TOKEN_SWAP_ADDRESS || CONTRACTS.TOKEN_SWAP) as `0x${string}`
 }
 
-// Map of known token addresses per chain
 const TOKEN_ADDRESSES_BY_CHAIN: Record<number, Record<string, `0x${string}`>> = {
-  1: {
-    USDC: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    USDT: "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-    DAI: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-    WETH: "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
-  },
-  84532: {
+  8453: {
+    STIM: "0x035d2026d6ab320150F9B0456D426D5CDdF8423F",
+    USDC: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
     WETH: "0x4200000000000000000000000000000000000006",
-    USDC: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-    STIM: "0x18Dc055ed8D98573D4518EE89EF50d6F4B74B528",
   },
 }
 
@@ -139,67 +129,23 @@ function isZeroAddress(addr?: string) {
   return !addr || addr === "0x0000000000000000000000000000000000000000"
 }
 
-// Known token catalogs by chain. Start with mainnet; extend as needed or override via env.
 const STATIC_TOKEN_CATALOG_BY_CHAIN: Record<number, Token[]> = {
-  1: [
+  8453: [
     {
-      address: CONTRACTS.TOKENS.USDC,
+      address: getEnvTokenAddress("USDC", 8453) as `0x${string}`,
       symbol: "USDC",
       name: "USD Coin",
       decimals: 6,
-      logoURI: "/usdc-coin.png",
-      chainId: 1,
+      logoURI: "/USDC.svg",
+      chainId: 8453,
     },
     {
-      address: CONTRACTS.TOKENS.USDT,
-      symbol: "USDT",
-      name: "Tether USD",
-      decimals: 6,
-      logoURI: "/usdt-coin.jpg",
-      chainId: 1,
-    },
-    {
-      address: CONTRACTS.TOKENS.DAI,
-      symbol: "DAI",
-      name: "Dai Stablecoin",
-      decimals: 18,
-      logoURI: "/dai-coin.jpg",
-      chainId: 1,
-    },
-    {
-      address: CONTRACTS.TOKENS.WETH,
-      symbol: "WETH",
-      name: "Wrapped Ether",
-      decimals: 18,
-      logoURI: "/eth-coin.jpg",
-      chainId: 1,
-    },
-  ],
-  // Base Sepolia (84532): WETH is canonical OP WETH, stables should be provided via env
-  84532: [
-    {
-      address: "0x4200000000000000000000000000000000000006",
-      symbol: "WETH",
-      name: "Wrapped Ether",
-      decimals: 18,
-      logoURI: "/eth-coin.jpg",
-      chainId: 84532,
-    },
-    {
-      address: getEnvTokenAddress("USDC", 84532) as `0x${string}`,
-      symbol: "USDC",
-      name: "USD Coin",
-      decimals: 6,
-      logoURI: "/usdc-coin.png",
-      chainId: 84532,
-    },
-    {
-      address: getEnvTokenAddress("STIM", 84532) as `0x${string}`,
+      address: getEnvTokenAddress("STIM", 8453) as `0x${string}`,
       symbol: "STIM",
       name: "STIM Token",
       decimals: 18,
       logoURI: "/stim-coin.png",
-      chainId: 84532,
+      chainId: 8453,
     },
   ],
 }
@@ -214,7 +160,6 @@ export function getSupportedTokens(chainId: number): Token[] {
     return { ...t, address: addr, chainId: chainId || t.chainId }
   })
 
-  // Optionally add commonly used stables via env if not in static catalog on the chain
   const maybeAdd = (symbol: string, name: string, decimals: number, logoURI: string) => {
     const envAddress = getEnvTokenAddress(symbol, chainId)
     if (!envAddress || isZeroAddress(envAddress)) return undefined
@@ -231,16 +176,14 @@ export function getSupportedTokens(chainId: number): Token[] {
   }
 
   const extras: Token[] = []
-  const extraUSDC = maybeAdd("USDC", "USD Coin", 6, "/usdc-coin.png")
+  const extraUSDC = maybeAdd("USDC", "USD Coin", 6, "/USDC.svg")
   if (extraUSDC) extras.push(extraUSDC)
   const extraUSDT = maybeAdd("USDT", "Tether USD", 6, "/usdt-coin.jpg")
   if (extraUSDT) extras.push(extraUSDT)
   const extraDAI = maybeAdd("DAI", "Dai Stablecoin", 18, "/dai-coin.jpg")
   if (extraDAI) extras.push(extraDAI)
 
-  // Filter out any tokens that have zero/empty addresses for the selected chain
   const finalList = [...withEnv, ...extras].filter((t) => !isZeroAddress(t.address))
 
-  // If after filtering we somehow have no tokens, fall back to mainnet catalog (read-only)
   return finalList.length > 0 ? finalList : STATIC_TOKEN_CATALOG_BY_CHAIN[1]
 }

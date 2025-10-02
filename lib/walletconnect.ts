@@ -1,11 +1,11 @@
 import { createAppKit } from "@reown/appkit/react"
-import { arbitrum, mainnet, polygon, base, optimism, baseSepolia } from "@reown/appkit/networks"
+import { base } from "@reown/appkit/networks"
 import type { AppKitNetwork } from "@reown/appkit/networks"
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi"
 
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID || "demo-project-id"
 
-export const networks: [AppKitNetwork, ...AppKitNetwork[]] = [mainnet, arbitrum, polygon, base, optimism, baseSepolia]
+export const networks: [AppKitNetwork, ...AppKitNetwork[]] = [base]
 
 export const wagmiAdapter = new WagmiAdapter({
   networks,
@@ -21,7 +21,7 @@ export const modal = createAppKit({
     analytics: true,
   },
   metadata: {
-    name: "Token Swap",
+    name: "SwapDen",
     description: "Swap from one token to another easily/",
     icons: ["https://myapp.com/icon.png"],
     url: "https://myapp.com",

@@ -2,7 +2,25 @@ import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 require('dotenv').config();
 
-const { BASE_TESTNET_URL, PRIVATE_KEY } = process.env;
+const { PRIVATE_KEY, BASE_RPC_URL, BASE_SEPOLIA_RPC_URL, ETHERSCAN_API_KEY } = process.env;
+
+console.log("PRIVATE_KEY:", PRIVATE_KEY);
+console.log("BASE_RPC_URL:", BASE_RPC_URL);
+console.log("BASE_SEPOLIA_RPC_URL:", BASE_SEPOLIA_RPC_URL);
+console.log("ETHERSCAN_API_KEY:", ETHERSCAN_API_KEY);
+
+if (!PRIVATE_KEY) {
+  throw new Error("Please set your PRIVATE_KEY in a .env file");
+}
+if (!BASE_RPC_URL) {
+  throw new Error("Please set your BASE_RPC_URL in a .env file");
+}
+if (!BASE_SEPOLIA_RPC_URL) {
+  throw new Error("Please set your BASE_SEPOLIA_RPC_URL in a .env file");
+}
+if (!ETHERSCAN_API_KEY) {
+  throw new Error("Please set your ETHERSCAN_API_KEY in a .env file");
+}
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -16,15 +34,21 @@ const config: HardhatUserConfig = {
     }
   },
   networks: {
+    'base': {
+      url: BASE_RPC_URL,
+      accounts: [PRIVATE_KEY as string],
+      gasPrice: 6000000,
+    },
     'base-sepolia': {
-      url: "https://base-sepolia.infura.io/v3/f7f8ec54d0cd4d82b7c2b3ecbdeb734a",
+      url: BASE_SEPOLIA_RPC_URL,
       accounts: [PRIVATE_KEY as string],
       gasPrice: 1000000000,
     },
   },
   etherscan: {
     apiKey: {
-     "base-sepolia": "484J4V72DZ5ZKJI9BYGYYA1RABZBBGFSPW"
+     "base-sepolia": ETHERSCAN_API_KEY as string,
+     "base": ETHERSCAN_API_KEY as string
     },
     customChains: [
       {
@@ -33,6 +57,14 @@ const config: HardhatUserConfig = {
         urls: {
          apiURL: "https://api.etherscan.io/v2/api?chainid=84532",
          browserURL: "https://sepolia.basescan.org"
+        }
+      },
+      {
+        network: "base",
+        chainId: 8453,
+        urls: {
+         apiURL: "https://api.etherscan.io/v2/api?chainid=8453",
+         browserURL: "https://basescan.org"
         }
       }
     ]
